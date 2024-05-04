@@ -1,3 +1,21 @@
 <h1>Prodcutos</h1>
 
-<%= @result %>
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+        </tr>
+    </thead>
+    <tbody>
+    
+    <% 
+    i=0
+    @result.each do |dato|%>
+        <tr>
+            <td><% dato[0][i]["id"] %></td>
+        </tr>
+        <% i=i+1%>
+    <%end%>
+    </tbody>
+</table>
+
