@@ -1,21 +1,13 @@
-<h1>Prodcutos</h1>
+<h1>Lista de sismos </h1>
 
 <table>
-    <thead>
-        <tr>
-            <th>id</th>
-        </tr>
-    </thead>
-    <tbody>
-    
-    <% 
-    i=0
-    @result.each do |dato|%>
-        <tr>
-            <td><% dato[0][i]["id"] %></td>
-        </tr>
-        <% i=i+1%>
-    <%end%>
-    </tbody>
-</table>
+<thead>
+    <td>id</td>
+</thead>
+<% @result.each do |resultados| %>
+<tbody>
+    <td><%= resultados['geometry']%></td>
+</tbody>
 
+<%end%>
+</table>

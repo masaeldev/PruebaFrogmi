@@ -19,6 +19,7 @@ class ProductsController < ApplicationController
                 @result = JSON.parse response.to_str
             end
         }
+        @result = @result['features']
         return @result
     end
 end
