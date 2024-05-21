@@ -7,40 +7,89 @@
   </head>
 
   <body>
-  <div class="table-responsive">
-    <h1>Lista de sismos </h1>
-        <table class="table">
-        <thead class="table-light">
-        <th scope="col">id</th>
-        <th scope="col">properties.mag</th>
-        <th scope="col">properties.place</th>
-        <th scope="col">properties.time</th>
-        <th scope="col">properties.url</th>
-        <th scope="col">properties.tsunami</th>
-        <th scope="col">properties.magType</th>
-        <th scope="col">properties.title</th>
-        <th scope="col">geometry.coordinates (longitude)</th>
-        <th scope="col">geometry.coordinates (latitude)</th>
-    </thead>
-    <% @result.each do |resultados| %>
-    <tbody>
-        <td><%= resultados['id']%></td>
-        <td><%= resultados['properties']['mag']%></td>
-        <td><%= resultados['properties']['place']%></td>
-        <td><%= resultados['properties']['time']%></td>
-        <td><a href="<%= resultados['properties']['url']%>"><%= resultados['properties']['url']%></a></td>
-        <td><%= resultados['properties']['tsunami']%></td>
-        <td><%= resultados['properties']['magType']%></td>
-        <td><%= resultados['properties']['title']%></td>
-        <td><%= resultados['geometry']['coordinates'][0]%></td>
-        <td><%= resultados['geometry']['coordinates'][1]%></td>
+  <h1>Lista de sismos </h1>
 
-    </tbody>
-
-    <%end%>
-    </table>
+    <div class="col-sm">
+        <div class="input-group col-auto">
+            <span class="input-group-text" >Busqueda id</span>
+            <input type="text"  class="form-control col-sm-7" id="inlineFormInputGroupUsername" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Ingrese el id a buscar">
         </div>
+    </div>
+    </br>
+    <div class="">
+        <table class="table">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">properties.mag</th>
+                    <th scope="col">properties.place</th>
+                    <th scope="col">properties.time</th>
+                    <th scope="col">properties.url</th>
+                    <th scope="col">properties.tsunami</th>
+                    <th scope="col">properties.magType</th>
+                    <th scope="col">properties.title</th>
+                    <th scope="col">geometry.coordinates (longitude)</th>
+                    <th scope="col">geometry.coordinates (latitude)</th>
+                </tr>
+            </thead>
+            <% @result.each do |resultados| %>
+            <tbody id ="tbodySismos">
+                <tr>
+                    <td><%= resultados['id']%></td>
+                    <td><%= resultados['properties']['mag']%></td>
+                    <td><%= resultados['properties']['place']%></td>
+                    <td><%= resultados['properties']['time']%></td>
+                    <td><a href="<%= resultados['properties']['url']%>"><%= resultados['properties']['url']%></a></td>
+                    <td><%= resultados['properties']['tsunami']%></td>
+                    <td><%= resultados['properties']['magType']%></td>
+                    <td><%= resultados['properties']['title']%></td>
+                    <td><%= resultados['geometry']['coordinates'][0]%></td>
+                    <td><%= resultados['geometry']['coordinates'][1]%></td>
+                </tr>
+            </tbody>
+            <%end%>
+            <tfoot id="tfoot_sismos">
+                <tr>
+                    <td colspan="3">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination" id="pagination_numbers">
+                                <li class="page-item"><a class="page-link disabled" role="button" id="previousButton">Anterior</a></li>
+<!--                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                               <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+                                <li class="page-item"><a class="page-link" role="button" id="nextButton">Siguiente</a></li>
+                            </ul>
+                        </nav>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script>
+        const tableBody = document.getElementById("tbodySismos");
+        const paginationUl = document.getElementById("pagination_numbers");
+        const prevButton = document.getElementById("previousButton");
+        const nextButton = document.getElementById("nextButton");
+        let current_page=1;
+        const itemsPerPage =100;
+        let totalPages;
+        let dataSismos = <%= @result %> ;
+
+        window.addEventListener('load', ()=>{
+                google.script.run.withSuccessHandler(data=>{
+                    llenarTabla();
+                })
+        })
+
+        function llenarTabla(){
+            tableBody.innerHTML='';
+            let start = (current_page-1)*itemsPerPage;
+            let end1 = start + itemsPerPage;
+            const actualItems = dataSismos.slice(start,end1);
+            console.log(actualItems)
+        }
+    </script>
   </body>
 </html>
